@@ -190,6 +190,31 @@
         }
     </style>
 </head>
+<div id="ai-chat"
+    style="position:fixed;bottom:20px;right:20px;width:300px;background:#020617;border:1px solid #38bdf8;border-radius:10px;padding:10px;">
+    <b>Ask About My Work</b>
+    <div id="chat" style="height:200px;overflow:auto;margin:10px 0;"></div>
+    <input id="msg" placeholder="Ask me about AWS, SRE, projects..." style="width:100%;padding:8px;">
+    <button onclick="send()" style="width:100%;margin-top:5px;">Send</button>
+</div>
+
+<script>
+    async function send() {
+        let m = msg.value;
+        chat.innerHTML += `<div><b>You:</b> ${m}</div>`;
+        msg.value = "";
+
+        const res = await fetch("https://YOUR_RENDER_URL/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: m })
+        });
+
+        const data = await res.json();
+        chat.innerHTML += `<div><b>Bot:</b> ${data.reply}</div>`;
+    }
+</script>
+
 
 <body>
 
